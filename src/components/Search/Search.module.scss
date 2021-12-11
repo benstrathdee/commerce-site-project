@@ -1,0 +1,57 @@
+.Search {
+	height: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	font-size: 1vw;
+	&_SearchBtn {
+		background-color: inherit;
+		border: none;
+		height: auto;
+		font-size: 1vw;
+		color: gray;
+		margin-left: -50px;
+		@media only screen and (max-width: 1600px) {
+			font-size: 2vw;
+		}
+		@media only screen and (max-width: 800px) {
+			font-size: 3vw;
+		}
+		@media only screen and (max-width: 600px) {
+			font-size: 5vw;
+		}
+		&:hover {
+			cursor: pointer;
+			color: darkslategray;
+		}
+	}
+	&_Searchbar {
+		background-color: whitesmoke;
+		transition: background-color 0.1s ease-in;
+		border: none;
+		width: 75%;
+		height: 70%;
+		border-radius: 50px;
+		font-size: 2vh;
+		color: darkslategray;
+		padding-left: 2%;
+		padding-right: 50px;
+		@media only screen and (max-width: 1600px) {
+			font-size: 1.8vw;
+		}
+		@media only screen and (max-width: 800px) {
+			font-size: 5vw;
+		}
+		@media only screen and (max-width: 400px) {
+			font-size: 5vw;
+		}
+		&:hover {
+			background-color: lightgray;
+			transition: background-color 0.2s ease-in;
+		}
+		&:focus {
+			background-color: lightgray;
+			outline: none;
+		}
+	}
+}
