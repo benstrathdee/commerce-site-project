@@ -1,0 +1,19 @@
+.ProductList {
+	margin: auto auto;
+	width: 80%;
+	display: grid;
+	grid-template-columns: 1fr 1fr 1fr 1fr;
+	font-size: 1vw;
+	@media only screen and (max-width: 1200px) {
+		grid-template-columns: 1fr 1fr 1fr;
+		font-size: 2vw;
+	}
+	@media only screen and (max-width: 800px) {
+		grid-template-columns: 1fr 1fr;
+		font-size: 5vw;
+	}
+	@media only screen and (max-width: 400px) {
+		grid-template-columns: 1fr;
+		font-size: 10vw;
+	}
+}

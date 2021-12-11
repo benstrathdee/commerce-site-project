@@ -1,0 +1,36 @@
+%arrow {
+	cursor: pointer;
+	position: absolute;
+	z-index: 2;
+	height: 1vw;
+	width: 1vw;
+	color: black;
+	font-weight: bold;
+	font-size: 18px;
+	user-select: none;
+	border-radius: 50%;
+	transition: 0.1s ease-in-out;
+	&:active {
+		color: white;
+	}
+}
+
+.FeaturedCarousel {
+	height: 20vw;
+	width: 70vw;
+	position: relative;
+	margin: auto;
+	padding-bottom: 20px;
+	border-bottom: 1px solid gray;
+	display: grid;
+	grid-template-columns: 1fr 1fr 1fr;
+	align-items: center;
+	&_Prev {
+		@extend %arrow;
+		left: -1px;
+	}
+	&_Next {
+		@extend %arrow;
+		right: -1px;
+	}
+}
