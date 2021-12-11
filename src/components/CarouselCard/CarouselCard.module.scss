@@ -1,0 +1,51 @@
+.CarouselCard {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	height: 19vw;
+	position: relative;
+}
+.ImageWrapper {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	&_Link {
+		text-decoration: none;
+		height: 19vw;
+	}
+	&_Image {
+		position: relative;
+		top: 0;
+		height: 19vw;
+		width: auto;
+	}
+}
+.InfoWrapper {
+	position: absolute;
+	bottom: 0;
+	left: 2.1vw;
+	z-index: 1;
+	width: 19vw;
+	height: 19vw;
+	display: flex;
+	justify-content: space-between;
+	align-items: flex-end;
+	color: rgba(0, 0, 0, 0);
+	opacity: 0;
+	background: black;
+	background: linear-gradient(
+		0deg,
+		black 0%,
+		rgba(0, 0, 0, 0.5) 10%,
+		rgba(255, 255, 255, 0) 30%
+	);
+	&:hover {
+		color: white;
+		opacity: 1;
+		transition: all 0.3s ease;
+	}
+	&_Content {
+		margin: 10px;
+		font-size: large;
+	}
+}
