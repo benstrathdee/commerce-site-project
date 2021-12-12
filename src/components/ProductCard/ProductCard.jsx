@@ -1,13 +1,14 @@
 import styles from "./ProductCard.module.scss";
 import { Link } from "react-router-dom";
-import { useEffect, useContext } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart } from "@fortawesome/free-solid-svg-icons";
-import { updateProduct } from "../../services/products";
+import { useContext, useState } from "react";
+import { updateData } from "../../services/data";
 import { DataContext } from "../../context/DataContext/DataContext";
 
 const ProductCard = ({ product }) => {
-	const { getData } = useContext(DataContext);
+	const { getProducts } = useContext(DataContext);
+	const [mainImage, setMainImage] = useState(product.ref_image);
 	const iconClass = product.isFav
 		? styles.ProductCard_Heart__Fav
 		: styles.ProductCard_Heart;
@@ -15,21 +16,26 @@ const ProductCard = ({ product }) => {
 	const handleClick = async () => {
 		product.isFav = !product.isFav;
 		const { id, ...record } = product;
-		await updateProduct(id, record, "products");
-		console.log(product.isFav);
+		await updateData(id, record, "products");
+		getProducts();
 	};
 
-	useEffect(() => {
-		getData();
-	}, [product]);
+	const handleHoverOn = () => {
+		setMainImage(product.product_images[0]);
+	};
+	const handleHoverOff = () => {
+		setMainImage(product.ref_image);
+	};
 
 	return (
 		<div className={styles.ProductCard}>
 			<Link to={`product/${product.id}`}>
 				<img
-					src={product.ref_image}
+					src={mainImage}
 					alt=""
 					className={styles.ProductCard_Image}
+					onMouseEnter={handleHoverOn}
+					onMouseLeave={handleHoverOff}
 				/>
 			</Link>
 			<h5 className={styles.ProductCard_Name}>
