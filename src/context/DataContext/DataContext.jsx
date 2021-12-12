@@ -1,5 +1,5 @@
 import { useEffect, useState, createContext, useContext } from "react";
-import { getProducts } from "./../../services/products";
+import { getData } from "../../services/data";
 import { SearchContext } from "../../context/SearchContext/SearchContext";
 
 export const DataContext = createContext();
@@ -7,15 +7,16 @@ export const DataContext = createContext();
 export const DataProvider = ({ children }) => {
 	const { search } = useContext(SearchContext);
 	const [products, setProducts] = useState([]);
+	const [cartItems, setCartItems] = useState([]);
 	const [filteredProducts, setFilteredProducts] = useState([]);
 
-	const getData = async () => {
-		const data = await getProducts();
+	const getProducts = async () => {
+		const data = await getData("products");
 		setProducts(data);
 	};
 
 	const filterData = async (searchTerm = "") => {
-		await getData();
+		await getProducts();
 		const filteredData =
 			searchTerm === ""
 				? products
@@ -27,8 +28,14 @@ export const DataProvider = ({ children }) => {
 		setFilteredProducts(filteredData);
 	};
 
+	const getCartItems = async () => {
+		const data = await getData("cart");
+		setCartItems(data);
+	};
+
 	useEffect(() => {
-		getData();
+		getProducts();
+		getCartItems();
 		filterData(search);
 	}, []);
 
@@ -37,7 +44,15 @@ export const DataProvider = ({ children }) => {
 		filterData(search);
 	}, [search]);
 
-	const data = { products, setProducts, filteredProducts, getData };
+	const data = {
+		getProducts,
+		setProducts,
+		products,
+		filteredProducts,
+		getCartItems,
+		setCartItems,
+		cartItems,
+	};
 
 	return <DataContext.Provider value={data}>{children}</DataContext.Provider>;
 };
