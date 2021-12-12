@@ -3,44 +3,81 @@ import { useContext, useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { DataContext } from "../../context/DataContext/DataContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faHeart } from "@fortawesome/free-solid-svg-icons";
-import { updateProduct } from "../../services/products";
+import { faHeart, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { updateData, createData, deleteData } from "../../services/data";
 
 const ProductPage = () => {
 	let params = useParams();
-	const { products, getData } = useContext(DataContext);
+	const { products, getProducts, getCartItems, cartItems } =
+		useContext(DataContext);
 	const [product, setProduct] = useState(
 		products.find((product) => product.id === params.id)
 	);
-	const productImages = product.product_images.concat(product.ref_image);
+	const [units, setUnits] = useState(1);
 	const [mainImage, setMainImage] = useState(product.ref_image);
+	const productImages = product.product_images.concat(product.ref_image);
+	const iconClass = product.isFav
+		? styles.InfoWrapper_Heart__Fav
+		: styles.InfoWrapper_Heart;
+
+	const currentCartItem = cartItems.find(
+		(item) => item.name === product.name
+	);
+	const defaultValue =
+		currentCartItem === undefined ? 1 : currentCartItem.units;
 
 	const handleHover = (event) => {
 		setMainImage(event.target.src);
 	};
 
-	let iconClass = product.isFav
-		? styles.InfoWrapper_Heart__Fav
-		: styles.InfoWrapper_Heart;
+	const handleChange = (event) => {
+		if (event.target.value > product.quantity) {
+			event.target.value = product.quantity;
+		} else if (event.target.value === NaN || event.target.value < 1) {
+			event.target.value = 1;
+		}
+		setUnits(event.target.value);
+	};
+
+	const addToCart = () => {
+		const {
+			id,
+			product_images,
+			isFav,
+			isFeatured,
+			quantity,
+			...strippedProduct
+		} = product;
+		const record = new Object(strippedProduct);
+		record.units = units;
+		currentCartItem === undefined
+			? createData(record, "cart")
+			: updateCart();
+		getCartItems();
+	};
+
+	const updateCart = async () => {
+		const { id, ...record } = currentCartItem;
+		record.units = units;
+		await updateData(id, record, "cart");
+	};
+
+	const removeFromCart = async () => {
+		if (window.confirm("Remove from cart?")) {
+			await deleteData(currentCartItem.id, "cart");
+			getCartItems();
+		}
+	};
 
 	const handleClick = async () => {
 		product.isFav = !product.isFav;
 		const { id, ...record } = product;
-		await updateProduct(id, record, "products");
-		await getData();
-		setProduct(products.find((product) => product.id === params.id));
-		console.log(product.isFav);
+		await updateData(id, record, "products");
+		getProducts();
 	};
 
 	useEffect(() => {
-		getData();
-		setProduct(products.find((product) => product.id === params.id));
-	}, [product]);
-
-	useEffect(() => {
 		window.scrollTo(0, 0);
-		getData();
-		setProduct(products.find((product) => product.id === params.id));
 	}, []);
 
 	return (
@@ -84,12 +121,35 @@ const ProductPage = () => {
 						type="number"
 						min="1"
 						max={product.quantity}
-						defaultValue="1"
+						defaultValue={defaultValue}
 						className={styles.ShoppingWrapper_Amount}
+						onChange={handleChange}
 					/>
-					<button className={styles.ShoppingWrapper_Cart}>
-						Add to cart
-					</button>
+					{product.quantity > 0 ? (
+						<div className={styles.CartWrapper}>
+							<button
+								className={styles.ShoppingWrapper_Cart}
+								onClick={addToCart}
+							>
+								{currentCartItem === undefined
+									? "Add to cart"
+									: "Update cart"}
+							</button>
+							{currentCartItem === undefined ? null : (
+								<FontAwesomeIcon
+									icon={faTrash}
+									onClick={removeFromCart}
+								/>
+							)}
+						</div>
+					) : (
+						<button
+							className={styles.ShoppingWrapper_Cart__OOS}
+							disabled
+						>
+							Out of stock
+						</button>
+					)}
 				</div>
 			</div>
 			<div className={styles.ImageWrapper}>

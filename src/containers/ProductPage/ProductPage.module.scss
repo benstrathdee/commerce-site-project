@@ -35,6 +35,7 @@
 	flex-wrap: wrap;
 	justify-content: space-between;
 	height: 10vw;
+	width: 100%;
 	&_Name {
 		margin: 5px 0;
 	}
@@ -106,5 +107,20 @@
 		&:active {
 			background-color: #1868cf;
 		}
+		&__OOS {
+			margin: 20px;
+			border: none;
+			background-color: darkslategray;
+			color: white;
+			width: 100%;
+			height: 2vw;
+			border-radius: 50px;
+			justify-self: center;
+		}
 	}
+}
+.CartWrapper {
+	display: flex;
+	width: 90%;
+	align-items: center;
 }
