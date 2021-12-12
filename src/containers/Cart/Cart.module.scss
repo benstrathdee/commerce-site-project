@@ -1,0 +1,41 @@
+.Cart {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	width: 100%;
+	margin-top: 5%;
+	@media only screen and (max-width: 1600px) {
+		margin-top: 10%;
+	}
+	@media only screen and (max-width: 800px) {
+		margin-top: 20%;
+	}
+	@media only screen and (max-width: 600px) {
+		margin-top: 30%;
+	}
+}
+.TotalWrapper {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-end;
+	margin: 20px;
+	width: 65%;
+	text-align: right;
+	&_Total {
+		font-size: larger;
+		font-weight: bold;
+	}
+	&_Checkout {
+		margin-top: 20px;
+		border: none;
+		background-color: #0051ba;
+		color: white;
+		width: fit-content;
+		height: 4vh;
+		border-radius: 50px;
+		&:active {
+			background-color: #1868cf;
+		}
+	}
+}
